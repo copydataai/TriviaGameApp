@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="TriviaGameApp.Views.PlayersView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Player Setup">
+
+    <ScrollView>
+        <VerticalStackLayout 
+            Padding="20" 
+            Spacing="15">
+            
+            <Label 
+                Text="How many players?"
+                FontSize="18" 
+                HorizontalOptions="Center" />
+            
+            <!-- Number of Players Picker -->
+            <Picker 
+                x:Name="PlayerCountPicker"
+                Title="Choose 1-4"
+                SelectedIndexChanged="OnPlayerCountChanged">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:Int32}">
+                        <x:Int32>1</x:Int32>
+                        <x:Int32>2</x:Int32>
+                        <x:Int32>3</x:Int32>
+                        <x:Int32>4</x:Int32>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+            <!-- This layout will hold the player name entries dynamically -->
+            <VerticalStackLayout x:Name="PlayerNamesContainer" 
+                                 Spacing="10" />
+
+            <!-- Start Game Button -->
+            <Button 
+                Text="Start Game"
+                Clicked="OnStartGameClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

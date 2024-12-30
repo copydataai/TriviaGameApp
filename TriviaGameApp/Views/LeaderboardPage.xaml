@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="TriviaGameApp.Views.LeaderboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Leaderboard">
+
+    <VerticalStackLayout Padding="20">
+        <Label 
+            Text="Leaderboard"
+            FontSize="24" 
+            HorizontalOptions="Center" />
+
+        <!-- Display top scores, etc. -->
+    </VerticalStackLayout>
+</ContentPage>
