@@ -2,6 +2,13 @@ using Microsoft.Maui.Controls;
 using TriviaGameApp.Models;
 
 namespace TriviaGameApp.Views;
+public static class GameState
+{
+    public static List<Player>? Players { get; set; }
+    public static int TotalQuestionsPerPlayer { get; set; } = 10;
+    // e.g. time limit, difficulty, etc.
+    public static int TimeLimitInSeconds { get; set; } = 10;
+}
 
 public partial class PlayersView : ContentPage
 {
@@ -46,24 +53,8 @@ public partial class PlayersView : ContentPage
             });
         }
 
-        // At this point, you have the players and their names.
-        // If there's only 1 player, you can start the single-player flow.
-        // If multiple players, you can do round-robin or per-round logic.
-        
-        // For now, let's just navigate to a "GamePage" (not shown) and pass these players.
-        // E.g., use a query property or store in a shared service.
-        
-        // Example: Passing data via query parameters (simplified example).
-        // In a real scenario, you might implement a data service or an actual route with query.
-        // For brevity, assume we have a route "GamePage" registered in AppShell.
-        // Also note that you can’t pass complex objects via query in Shell easily.
-        // You’d typically use a shared static service or an observable singleton with a binding.
-
-        // Pseudocode if you had a service:
-        // MyGameService.CurrentPlayers = players;
-        // await Shell.Current.GoToAsync("GamePage");
-
-        await DisplayAlert("Players", 
-            $"Starting game for {selectedCount} player(s)!", "OK");
+        GameState.Players = players;
+        GameState.TotalQuestionsPerPlayer = 10;
+        await Shell.Current.GoToAsync($"//GamePage");
     }
 }
