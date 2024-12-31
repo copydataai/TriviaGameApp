@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="TriviaGameApp.Views.GamePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Trivia Game - Round">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="20">
+        
+        <!-- Current Player -->
+        <Label 
+            x:Name="PlayerLabel"
+            Grid.Row="0"
+            FontSize="20"
+            HorizontalOptions="Center" 
+            Text="Player 1" />
+        
+        <!-- Question Display -->
+        <Label 
+            x:Name="QuestionLabel"
+            Grid.Row="1"
+            FontSize="18"
+            HorizontalOptions="CenterAndExpand"
+            Text="Question goes here"
+            Margin="0,10,0,20"/>
+        
+        <!-- Answers Container (Buttons) -->
+        <VerticalStackLayout 
+            x:Name="AnswersContainer"
+            Grid.Row="2"
+            Spacing="15"
+            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="Start">
+            <!-- Dynamically filled by code-behind -->
+        </VerticalStackLayout>
+        
+        <!-- Timer + Next Button  -->
+        <HorizontalStackLayout 
+            Grid.Row="3"
+            Spacing="20"
+            HorizontalOptions="CenterAndExpand">
+            
+            <!-- Countdown label -->
+            <Label 
+                x:Name="TimerLabel"
+                FontSize="18"
+                TextColor="Red"
+                HorizontalOptions="CenterAndExpand"
+                Text="Time Left: 10" />
+            
+            <!-- If you want a next or skip button (optional) -->
+            <Button 
+                Text="Skip"
+                Clicked="OnSkipClicked"/>
+        </HorizontalStackLayout>
+    </Grid>
+</ContentPage>

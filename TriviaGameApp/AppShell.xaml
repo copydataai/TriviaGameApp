@@ -27,5 +27,9 @@
     <ShellContent 
         Route="SettingsPage" 
         ContentTemplate="{DataTemplate views:SettingsPage}" />
+    
+    <ShellContent 
+        Route="GamePage" 
+        ContentTemplate="{DataTemplate views:GamePage}" />
 
 </Shell>
