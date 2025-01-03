@@ -5,12 +5,46 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Settings">
 
-    <VerticalStackLayout Padding="20">
-        <Label 
-            Text="Settings"
-            FontSize="24" 
-            HorizontalOptions="Center" />
-        
-        <!-- Add toggles or preferences -->
-    </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Category" FontAttributes="Bold" />
+            <Picker 
+                x:Name="CategoryPicker"
+                Title="Select Category" />
+
+            <Label Text="Difficulty" FontAttributes="Bold" />
+            <Picker 
+                x:Name="DifficultyPicker"
+                Title="Select Difficulty" />
+
+            <Label Text="Type" FontAttributes="Bold" />
+            <Picker 
+                x:Name="TypePicker"
+                Title="Select Type" />
+
+            <Label Text="Number of Questions" FontAttributes="Bold" />
+            <HorizontalStackLayout Spacing="10">
+                <Label 
+                    Text="{Binding Source={x:Reference QuestionStepper}, Path=Value, StringFormat='{0:F0}'}" 
+                    HorizontalOptions="Center" 
+                    WidthRequest="30"
+                />
+                <Stepper 
+                    x:Name="QuestionStepper"
+                    Minimum="1"
+                    Maximum="50"
+                    Increment="1"
+                    Value="10"
+                    ValueChanged="OnQuestionsStepperValueChanged" />
+            </HorizontalStackLayout>
+            
+            <Button 
+                Text="Save Settings"
+                Clicked="OnSaveSettingsClicked" 
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+
