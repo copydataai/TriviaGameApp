@@ -27,16 +27,35 @@ namespace TriviaGameApp.Services
         /// </summary>
         /// <param name="amount">Number of questions to retrieve</param>
         /// <returns>A list of <see cref="TriviaQuestion"/> objects with cleaned question data.</returns>
-        public async Task<List<TriviaQuestion>> FetchTriviaAsync(int amount = 10)
+        public async Task<List<TriviaQuestion>> FetchTriviaAsync()
         {
             try
             {
+                int amount = TriviaSettings.NumberOfQuestions;
+                string category = TriviaSettings.Category;
+                string difficulty = TriviaSettings.Difficulty;
+                string type = TriviaSettings.TriviaType;
                 // Build the request URL with query params
                 string requestUrl = $"{BaseUrl}?amount={amount}";
 
                 // Get JSON as string
-                string json = await _httpClient.GetStringAsync(requestUrl);
 
+                if (category != "any")
+                {
+                    requestUrl += $"&category={category}";
+                }
+
+                if(difficulty != "any")
+                {
+                    requestUrl += $"&difficulty={difficulty}";
+                }
+
+                if (type != "any")
+                {
+                    requestUrl += $"&type={type}";
+                }
+
+                string json = await _httpClient.GetStringAsync(requestUrl);
                 // Deserialize into our OpenTDBResponse structure
                 var options = new JsonSerializerOptions
                 {
@@ -46,7 +65,7 @@ namespace TriviaGameApp.Services
 
                 var apiResponse = JsonSerializer.Deserialize<OpenTDBResponse>(json, options);
 
-                if (apiResponse is null || apiResponse.Results is null)
+                if (apiResponse == null || apiResponse.Results == null)
                 {
                     return new List<TriviaQuestion>();
                 }
@@ -69,6 +88,7 @@ namespace TriviaGameApp.Services
         private List<TriviaQuestion> ConvertToTriviaQuestions(List<OpenTDBQuestion> openTDBQuestions)
         {
             var result = new List<TriviaQuestion>();
+            // TODO: Check that the questions are enough or make just one fetch per all 
 
             foreach (var q in openTDBQuestions)
             {
