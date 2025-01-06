@@ -54,20 +54,24 @@
 
                 <!-- Table Header -->
                 <Grid 
-                    ColumnDefinitions="2*,1*,1*,1*,1*,1*"
+                    ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*"
                     Padding="5,0" 
                     BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#222222}">
-                    <Label Grid.Column="0" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="0" Text="Rank" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="1" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="2" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="2" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="3" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="3" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="4" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="4" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="5" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"
+                    <Label Grid.Column="5" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="6" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="7" Text="Date" FontAttributes="Bold" HorizontalOptions="Center"
                            Style="{StaticResource AdaptiveLabelStyle}" />
                 </Grid>
 
@@ -81,20 +85,29 @@
                             <Border 
                                 StrokeThickness="1"
                                 Stroke="{AppThemeBinding Light=LightGray, Dark=Gray}"
+                                Padding="10"
                                 Margin="0,2">
-                                <Grid ColumnDefinitions="2*,1*,1*,1*,1*,1*" Padding="5,0">
-                                    <Label Grid.Column="0" Text="{Binding Name}" HorizontalOptions="Center"
+                                <Grid ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*" Padding="5,0">
+                                    <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center">
+                                        <Label Text="{Binding Rank}" Margin="0,0,5,0"
+                                               Style="{StaticResource AdaptiveLabelStyle}" />
+                                        <Label Text="{Binding MedalEmoji}"
+                                            Style="{StaticResource AdaptiveLabelStyle}" />
+                                    </HorizontalStackLayout>
+                                    <Label Grid.Column="1" Text="{Binding Name}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="1" Text="{Binding Category}" HorizontalOptions="Center"
+                                    <Label Grid.Column="2" Text="{Binding Category}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="2" Text="{Binding Difficulty}" HorizontalOptions="Center"
+                                    <Label Grid.Column="3" Text="{Binding Difficulty}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="3" Text="{Binding Questions}" HorizontalOptions="Center"
+                                    <Label Grid.Column="4" Text="{Binding Questions}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="4" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"
+                                    <Label Grid.Column="5" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="5" Text="{Binding TotalPoints}" HorizontalOptions="Center"
+                                    <Label Grid.Column="6" Text="{Binding TotalPoints}" HorizontalOptions="Center"
                                            Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="7" Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}" HorizontalOptions="Center"
+                                             Style="{StaticResource AdaptiveLabelStyle}" />
                                 </Grid>
                             </Border>
                         </DataTemplate>

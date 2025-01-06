@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TriviaGameApp.Models;
 using TriviaGameApp.Services;
+using Windows.Services.Maps.OfflineMaps;
 
 namespace TriviaGameApp.Views
 {
@@ -76,6 +77,11 @@ namespace TriviaGameApp.Views
             // Do NOT show the table yet (LeaderboardContainer.IsVisible = false).
             // We'll only show after the user changes a filter.
             LeaderboardContainer.IsVisible = true;
+
+            for(int i = 0; i < _allEntries.Count; i++)
+            {
+                _allEntries[i].Rank = i + 1;
+            }
             LeaderboardCollectionView.ItemsSource = _allEntries;
         }
 
@@ -130,6 +136,11 @@ namespace TriviaGameApp.Views
 
             // Sort by points descending
             _filteredEntries = query.OrderByDescending(x => x.TotalPoints).ToList();
+
+            for (int i = 0; i < _filteredEntries.Count; i++)
+            {
+                _filteredEntries[i].Rank = i + 1;
+            }           
 
             // Bind to CollectionView
             LeaderboardCollectionView.ItemsSource = _filteredEntries;
