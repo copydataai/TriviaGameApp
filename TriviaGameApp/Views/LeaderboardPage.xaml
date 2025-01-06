@@ -1,16 +1,64 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ContentPage 
     x:Class="TriviaGameApp.Views.LeaderboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:TriviaGameApp.Models"
     Title="Leaderboard">
 
-    <VerticalStackLayout Padding="20">
+    <VerticalStackLayout Padding="20" Spacing="10">
+        
         <Label 
             Text="Leaderboard"
-            FontSize="24" 
+            FontSize="24"
             HorizontalOptions="Center" />
 
-        <!-- Display top scores, etc. -->
+        <!-- Displaying the leaderboard entries -->
+        <CollectionView x:Name="LeaderboardCollectionView">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:LeaderboardEntry">
+                    <Frame BorderColor="Gray" CornerRadius="5" Padding="10" Margin="0,5">
+                        <VerticalStackLayout Spacing="3">
+                            <Label 
+                                Text="{Binding Name}"
+                                FontAttributes="Bold" 
+                                FontSize="16"/>
+                            <Label 
+                                Text="{Binding Category}"
+                                FontSize="14" 
+                                TextColor="Gray" />
+                                
+                            <Label
+                                Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}"
+                                FontSize="14"
+                                TextColor="Gray" />
+                            <HorizontalStackLayout Spacing="10">
+                                <Label 
+                                    Text="Questions: "
+                                    FontAttributes="Bold"/>
+                                <Label 
+                                    Text="{Binding Questions}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="10">
+                                <Label 
+                                    Text="Time: "
+                                    FontAttributes="Bold"/>
+                                <!-- Convert seconds to mm:ss or display raw seconds -->
+                                <Label 
+                                    Text="{Binding TimeInSeconds, StringFormat='{0} sec'}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="10">
+                                <Label 
+                                    Text="Total Points: "
+                                    FontAttributes="Bold"/>
+                                <Label 
+                                    Text="{Binding TotalPoints}" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
+
