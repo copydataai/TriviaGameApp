@@ -1,64 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage 
     x:Class="TriviaGameApp.Views.LeaderboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:TriviaGameApp.Models"
-    Title="Leaderboard">
+    Title="Leaderboard"
+    BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#101010}">
 
-    <VerticalStackLayout Padding="20" Spacing="10">
-        
-        <Label 
-            Text="Leaderboard"
-            FontSize="24"
-            HorizontalOptions="Center" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Adaptive label style for text color -->
+            <Style x:Key="AdaptiveLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-        <!-- Displaying the leaderboard entries -->
-        <CollectionView x:Name="LeaderboardCollectionView">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:LeaderboardEntry">
-                    <Frame BorderColor="Gray" CornerRadius="5" Padding="10" Margin="0,5">
-                        <VerticalStackLayout Spacing="3">
-                            <Label 
-                                Text="{Binding Name}"
-                                FontAttributes="Bold" 
-                                FontSize="16"/>
-                            <Label 
-                                Text="{Binding Category}"
-                                FontSize="14" 
-                                TextColor="Gray" />
-                                
-                            <Label
-                                Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}"
-                                FontSize="14"
-                                TextColor="Gray" />
-                            <HorizontalStackLayout Spacing="10">
-                                <Label 
-                                    Text="Questions: "
-                                    FontAttributes="Bold"/>
-                                <Label 
-                                    Text="{Binding Questions}" />
-                            </HorizontalStackLayout>
-                            <HorizontalStackLayout Spacing="10">
-                                <Label 
-                                    Text="Time: "
-                                    FontAttributes="Bold"/>
-                                <!-- Convert seconds to mm:ss or display raw seconds -->
-                                <Label 
-                                    Text="{Binding TimeInSeconds, StringFormat='{0} sec'}" />
-                            </HorizontalStackLayout>
-                            <HorizontalStackLayout Spacing="10">
-                                <Label 
-                                    Text="Total Points: "
-                                    FontAttributes="Bold"/>
-                                <Label 
-                                    Text="{Binding TotalPoints}" />
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+    <!-- We wrap the whole page in an absolute layout so we can center the spinner easily -->
+    <AbsoluteLayout>
+
+        <!-- The main content of the page (filters + table) -->
+        <ScrollView 
+            x:Name="LeaderboardContainer"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            IsVisible="False"> <!-- hidden until user changes a filter -->
+
+            <VerticalStackLayout Padding="20" Spacing="10">
+                
+                <!-- FILTER CONTROLS -->
+                <HorizontalStackLayout Spacing="5" Margin="0,10,0,10">
+                    <!-- Category picker -->
+                    <Picker 
+                        x:Name="CategoryFilterPicker"
+                        Style="{StaticResource AdaptiveLabelStyle}"
+                        Title="Filter by Category"
+                        WidthRequest="180"/>
+            
+                    <!-- Difficulty picker -->
+                    <Picker 
+                        x:Name="DifficultyFilterPicker"
+                        Style="{StaticResource AdaptiveLabelStyle}"
+                        Title="Filter by Difficulty"
+                        WidthRequest="150"/>
+
+                    <!-- Name search -->
+                    <Entry 
+                        x:Name="NameSearchEntry"
+                        Style="{StaticResource AdaptiveLabelStyle}"
+                        Placeholder="Filter by Name"
+                        WidthRequest="120" />
+                </HorizontalStackLayout>
+
+                <!-- Table Header -->
+                <Grid 
+                    ColumnDefinitions="2*,1*,1*,1*,1*,1*"
+                    Padding="5,0" 
+                    BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#222222}">
+                    <Label Grid.Column="0" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="1" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="2" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="3" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="4" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="5" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"
+                           Style="{StaticResource AdaptiveLabelStyle}" />
+                </Grid>
+
+                <!-- CollectionView for the leaderboard -->
+                <CollectionView 
+                    x:Name="LeaderboardCollectionView"
+                    ItemsLayout="VerticalList">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:LeaderboardEntry">
+                            <!-- A Border around each row for separation -->
+                            <Border 
+                                StrokeThickness="1"
+                                Stroke="{AppThemeBinding Light=LightGray, Dark=Gray}"
+                                Margin="0,2">
+                                <Grid ColumnDefinitions="2*,1*,1*,1*,1*,1*" Padding="5,0">
+                                    <Label Grid.Column="0" Text="{Binding Name}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="1" Text="{Binding Category}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="2" Text="{Binding Difficulty}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="3" Text="{Binding Questions}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="4" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="5" Text="{Binding TotalPoints}" HorizontalOptions="Center"
+                                           Style="{StaticResource AdaptiveLabelStyle}" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Loading indicator + random text in the center -->
+        <VerticalStackLayout
+            x:Name="LoadingLayout"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Label 
+                x:Name="RandomLoadingLabel" 
+                Style="{StaticResource AdaptiveLabelStyle}"
+                Text="Loading..."
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                IsVisible="False" />
+
+            <ActivityIndicator 
+                x:Name="LoadingIndicator"
+                IsRunning="False"
+                IsVisible="False"
+                Color="{AppThemeBinding Light=Blue, Dark=Cyan}"
+                HeightRequest="50" 
+                HorizontalOptions="Center" 
+                VerticalOptions="Center" />
+
+        </VerticalStackLayout>
+
+    </AbsoluteLayout>
 </ContentPage>
-
