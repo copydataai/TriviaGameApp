@@ -177,6 +177,8 @@ namespace TriviaGameApp.Views
 
             string categoryText = CategoryHelper.GetCategoryText(TriviaSettings.Category);
 
+            string difficultyText = TriviaSettings.Difficulty;
+
             // Suppose each player answered X questions; 
             // if each has 10 in your logic, or you can track how many they actually answered.
             // For simplicity, let's say each player's question count was set or known:
@@ -194,9 +196,10 @@ namespace TriviaGameApp.Views
                 var entry = new LeaderboardEntry
                 {
                     Name = player.Name,
-                    Category = categoryText,     // or your chosen category
-                    Questions = questionsPerPlayer,         // or however many answered
-                    TimeInSeconds = totalSeconds,           // total match time for all players
+                    Category = categoryText,
+                    Questions = questionsPerPlayer,         
+                    TimeInSeconds = totalSeconds,           
+                    Difficulty = difficultyText,  
                     TotalPoints = player.Score,
                     DateOfGame = dateOfGame
                 };
