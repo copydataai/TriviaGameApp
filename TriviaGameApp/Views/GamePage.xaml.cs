@@ -12,9 +12,10 @@ namespace TriviaGameApp.Views
         private TriviaService _triviaService = new();
         
         private Dictionary<int, List<TriviaQuestion>> _playerQuestions = new();
-
         private int _currentPlayerIndex = 0;
         private int _currentQuestionIndex = 0;
+
+        private DateTime _gameStartTime;
 
         private int _timeLeft;
         private bool _timerRunning = false;
@@ -27,6 +28,7 @@ namespace TriviaGameApp.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            _gameStartTime = DateTime.Now;
 
             if (GameState.Players == null || GameState.Players.Count == 0)
             {
@@ -48,9 +50,9 @@ namespace TriviaGameApp.Views
 
         private void LoadQuestion()
         {
-            if (GameState.Players == null)
-                return;
+            if (GameState.Players == null) return;
 
+            var currentPlayer = GameState.Players[_currentPlayerIndex];
             var questions = _playerQuestions[_currentPlayerIndex];
             if (_currentQuestionIndex >= questions.Count)
             {
@@ -64,7 +66,6 @@ namespace TriviaGameApp.Views
                 }
             }
             
-            var currentPlayer = GameState.Players[_currentPlayerIndex];
             PlayerLabel.Text = $"{currentPlayer.Name}'s Turn (Score: {currentPlayer.Score})";
 
             var question = questions[_currentQuestionIndex];
@@ -88,7 +89,6 @@ namespace TriviaGameApp.Views
 
         private void OnAnswerSelected(string chosenAnswer, TriviaQuestion question)
         {
-            _timerRunning = false;
 
             bool isCorrect = chosenAnswer == question.CorrectAnswer;
 
@@ -167,20 +167,56 @@ namespace TriviaGameApp.Views
 
         private async void EndGame()
         {
-            if (GameState.Players != null)
+        {
+            // Stop the clock
+            var totalTime = DateTime.Now - _gameStartTime;
+            int totalSeconds = (int)totalTime.TotalSeconds;
+
+            // Load existing leaderboard from file
+            var leaderboard = LeaderboardFileService.LoadLeaderboard();
+
+            string categoryText = CategoryHelper.GetCategoryText(TriviaSettings.Category);
+
+            // Suppose each player answered X questions; 
+            // if each has 10 in your logic, or you can track how many they actually answered.
+            // For simplicity, let's say each player's question count was set or known:
+            int questionsPerPlayer = _playerQuestions.Count > 0 
+                ? _playerQuestions[0].Count 
+                : 10; // or read from your logic
+
+
+            string dateOfGame = DateTime.Now.ToString("yyyy-MM-dd HH:mm"); 
+
+
+            // Create an entry for each player
+            foreach (var player in GameState.Players)
             {
-                GameState.Players.Sort((p1, p2) => p2.Score.CompareTo(p1.Score));
+                var entry = new LeaderboardEntry
+                {
+                    Name = player.Name,
+                    Category = categoryText,     // or your chosen category
+                    Questions = questionsPerPlayer,         // or however many answered
+                    TimeInSeconds = totalSeconds,           // total match time for all players
+                    TotalPoints = player.Score,
+                    DateOfGame = dateOfGame
+                };
+                leaderboard.Add(entry);
             }
 
+            // Save updated leaderboard
+            LeaderboardFileService.SaveLeaderboard(leaderboard);
+
+            // Show final scores or do something else
             string resultMessage = "Final Scores:\n\n";
-            foreach (var p in GameState.Players ?? new List<Player>())
+            foreach (var p in GameState.Players)
             {
                 resultMessage += $"{p.Name}: {p.Score}\n";
             }
-
             await DisplayAlert("Game Over!", resultMessage, "OK");
 
+            // Optionally navigate to Leaderboard page
             await Shell.Current.GoToAsync("LeaderboardPage");
+        }
         }
     }
 }
