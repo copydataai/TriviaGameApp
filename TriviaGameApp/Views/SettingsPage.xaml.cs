@@ -3,63 +3,91 @@ using System;
 using System.Collections.Generic;
 using TriviaGameApp.Services;
 
-namespace TriviaGameApp.Views;
-public partial class SettingsPage : ContentPage
+namespace TriviaGameApp.Views
 {
-
-    private List<CategoryOption> _categories = CategoryHelper.AllCategories;    
-    private List<SimpleOption> _difficulties = DifficultyHelper.AllDifficulties;
-    private List<SimpleOption> _types = TypeHelper.AllTypes;
-    
-    public SettingsPage()
+    public partial class SettingsPage : ContentPage
     {
-        InitializeComponent();
-    }
+        private List<CategoryOption> _categories = CategoryHelper.AllCategories;
+        private List<SimpleOption> _difficulties = DifficultyHelper.AllDifficulties;
+        private List<SimpleOption> _types = TypeHelper.AllTypes;
 
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
+        // We'll define theme modes as a simple list of strings
+        private List<string> _themeOptions = new()
+        {
+            "System",
+            "Light",
+            "Dark"
+        };
 
-        CategoryPicker.ItemsSource = CategoryHelper.AllCategories;
-        DifficultyPicker.ItemsSource = DifficultyHelper.AllDifficulties;
-        TypePicker.ItemsSource = TypeHelper.AllTypes;
+        public SettingsPage()
+        {
+            InitializeComponent();
+        }
 
-        int catIndex = _categories.FindIndex(c => c.Value == TriviaSettings.Category);
-        CategoryPicker.SelectedIndex = catIndex >= 0 ? catIndex : 0;
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
 
-        int diffIndex = _difficulties.FindIndex(d => d.Value == TriviaSettings.Difficulty);
-        DifficultyPicker.SelectedIndex = diffIndex >= 0 ? diffIndex : 0;
+            // Category, difficulty, type pickers
+            CategoryPicker.ItemsSource = _categories;
+            DifficultyPicker.ItemsSource = _difficulties;
+            TypePicker.ItemsSource = _types;
 
-        int typeIndex = _types.FindIndex(t => t.Value == TriviaSettings.TriviaType);
-        TypePicker.SelectedIndex = typeIndex >= 0 ? typeIndex : 0;
+            // Theme picker
+            ThemePicker.ItemsSource = _themeOptions;
 
-        QuestionStepper.Value = TriviaSettings.NumberOfQuestions;
-    }
+            // Select current Category
+            int catIndex = _categories.FindIndex(c => c.Value == TriviaSettings.Category);
+            CategoryPicker.SelectedIndex = catIndex >= 0 ? catIndex : 0;
 
-    private void OnQuestionsStepperValueChanged(object sender, ValueChangedEventArgs e)
-    {
-        // TODO: Update the label to show the new value
-    }
+            // Difficulty
+            int diffIndex = _difficulties.FindIndex(d => d.Value == TriviaSettings.Difficulty);
+            DifficultyPicker.SelectedIndex = diffIndex >= 0 ? diffIndex : 0;
 
-    private async void OnSaveSettingsClicked(object sender, EventArgs e)
-    {
-        // Update TriviaSettings from UI
-        if (CategoryPicker.SelectedIndex >= 0)
-            TriviaSettings.Category = ((CategoryOption)CategoryPicker.SelectedItem).Value;
+            // Type
+            int typeIndex = _types.FindIndex(t => t.Value == TriviaSettings.TriviaType);
+            TypePicker.SelectedIndex = typeIndex >= 0 ? typeIndex : 0;
 
-        if (DifficultyPicker.SelectedIndex >= 0)
-            TriviaSettings.Difficulty = ((SimpleOption)DifficultyPicker.SelectedItem).Value;
+            // Number of Questions
+            QuestionStepper.Value = TriviaSettings.NumberOfQuestions;
 
-        if (TypePicker.SelectedIndex >= 0)
-            TriviaSettings.TriviaType = ((SimpleOption)TypePicker.SelectedItem).Value;
+            // Theme
+            int themeIdx = _themeOptions.IndexOf(TriviaSettings.AppThemeChoice);
+            ThemePicker.SelectedIndex = themeIdx >= 0 ? themeIdx : 0;
+        }
 
-        TriviaSettings.NumberOfQuestions = (int)QuestionStepper.Value;
+        private void OnQuestionsStepperValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            // If you want to do something each time stepper changes, do it here
+        }
 
-        TriviaSettings.SaveSettings();
+        private async void OnSaveSettingsClicked(object sender, EventArgs e)
+        {
+            // Update from UI
+            if (CategoryPicker.SelectedIndex >= 0)
+                TriviaSettings.Category = ((CategoryOption)CategoryPicker.SelectedItem).Value;
 
-        await DisplayAlert("Settings Saved", "Your trivia settings have been updated.", "OK");
+            if (DifficultyPicker.SelectedIndex >= 0)
+                TriviaSettings.Difficulty = ((SimpleOption)DifficultyPicker.SelectedItem).Value;
 
-        await Shell.Current.GoToAsync("..");
+            if (TypePicker.SelectedIndex >= 0)
+                TriviaSettings.TriviaType = ((SimpleOption)TypePicker.SelectedItem).Value;
+
+            TriviaSettings.NumberOfQuestions = (int)QuestionStepper.Value;
+
+            // Theme
+            if (ThemePicker.SelectedIndex >= 0)
+                TriviaSettings.AppThemeChoice = _themeOptions[ThemePicker.SelectedIndex];
+
+            // Save to file or preferences
+            TriviaSettings.SaveSettings();
+
+            // Apply the chosen theme
+            App.ApplyTheme(TriviaSettings.AppThemeChoice);
+
+            await DisplayAlert("Settings Saved", "Your trivia settings have been updated.", "OK");
+
+            await Shell.Current.GoToAsync("..");
+        }
     }
 }
-

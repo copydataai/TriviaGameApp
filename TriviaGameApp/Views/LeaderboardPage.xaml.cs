@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TriviaGameApp.Models;
 using TriviaGameApp.Services;
-using Windows.Services.Maps.OfflineMaps;
 
 namespace TriviaGameApp.Views
 {

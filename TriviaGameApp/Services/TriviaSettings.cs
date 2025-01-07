@@ -10,11 +10,15 @@ public static class TriviaSettings
     public static string TriviaType { get; set; } = "any"; // "multiple", "boolean", "any"
     public static int NumberOfQuestions { get; set; } = 10;
 
+    public static string AppThemeChoice { get; set; } = "Dark";
+
     // Keys used in Preferences
     private const string CategoryKey = "Category";
     private const string DifficultyKey = "Difficulty";
     private const string TriviaTypeKey = "TriviaType";
     private const string NumQuestionsKey = "NumberOfQuestions";
+
+    private const string AppThemeChoiceKey = "AppThemeChoice";
 
     public static void LoadSettings()
     {
@@ -42,6 +46,7 @@ public static class TriviaSettings
             Difficulty = Preferences.Get(DifficultyKey, "any");
             TriviaType = Preferences.Get(TriviaTypeKey, "any");
             NumberOfQuestions = Preferences.Get(NumQuestionsKey, 10);
+            AppThemeChoice = Preferences.Get(AppThemeChoiceKey, "Dark");
         }
     }
 
@@ -59,6 +64,7 @@ public static class TriviaSettings
         Preferences.Set(DifficultyKey, Difficulty);
         Preferences.Set(TriviaTypeKey, TriviaType);
         Preferences.Set(NumQuestionsKey, NumberOfQuestions);
+        Preferences.Set(AppThemeChoiceKey, AppThemeChoice);
     }
 
     public static void FromData(TriviaSettingsData data)
@@ -67,6 +73,7 @@ public static class TriviaSettings
         Difficulty = data.Difficulty;
         TriviaType = data.TriviaType;
         NumberOfQuestions = data.NumberOfQuestions;
+        AppThemeChoice = data.AppThemeChoice;
     }
 
     public static TriviaSettingsData ToData() => new()
@@ -74,7 +81,8 @@ public static class TriviaSettings
         Category = Category,
         Difficulty = Difficulty,
         TriviaType = TriviaType,
-        NumberOfQuestions = NumberOfQuestions
+        NumberOfQuestions = NumberOfQuestions,
+        AppThemeChoice = AppThemeChoice
     };
 }
 
@@ -85,4 +93,7 @@ public class TriviaSettingsData
     public string Difficulty { get; set; } = "any";
     public string TriviaType { get; set; } = "any";
     public int NumberOfQuestions { get; set; } = 10;
+    
+
+    public string AppThemeChoice { get; set; } = "Dark";
 }

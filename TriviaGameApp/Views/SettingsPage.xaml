@@ -5,32 +5,66 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Settings">
 
+    <!-- Minimalistic Japanese style: subtle accent color, spacing, etc. -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Example style for labels, with a Japanese-inspired font or accent color. -->
+            <Style x:Key="JapaneseLabelStyle" TargetType="Label">
+                <!-- For demonstration, let's use a generic font: "Yu Mincho" or a fallback. -->
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=#111, Dark=#eee}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+
+            <!-- Style for pickers in minimalistic design. -->
+            <Style x:Key="MinimalPickerStyle" TargetType="Picker">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F0F0F0, Dark=#333}" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+            </Style>
+
+            <!-- Style for the entire page (optional). -->
+            <Style TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F9F9F9, Dark=#1A1A1A}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
 
-            <Label Text="Category" FontAttributes="Bold" />
+            <!-- Category -->
+            <Label Text="Category" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
             <Picker 
                 x:Name="CategoryPicker"
+                Style="{StaticResource MinimalPickerStyle}"
                 Title="Select Category" />
 
-            <Label Text="Difficulty" FontAttributes="Bold" />
+            <!-- Difficulty -->
+            <Label Text="Difficulty" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
             <Picker 
                 x:Name="DifficultyPicker"
+                Style="{StaticResource MinimalPickerStyle}"
                 Title="Select Difficulty" />
 
-            <Label Text="Type" FontAttributes="Bold" />
+            <!-- Type -->
+            <Label Text="Type" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
             <Picker 
                 x:Name="TypePicker"
+                Style="{StaticResource MinimalPickerStyle}"
                 Title="Select Type" />
 
-            <Label Text="Number of Questions" FontAttributes="Bold" />
+            <!-- Number of Questions -->
+            <Label Text="Number of Questions" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
             <HorizontalStackLayout Spacing="10">
                 <Label 
                     Text="{Binding Source={x:Reference QuestionStepper}, Path=Value, StringFormat='{0:F0}'}" 
                     HorizontalOptions="Center" 
                     WidthRequest="30"
+                    Style="{StaticResource JapaneseLabelStyle}"
                 />
                 <Stepper 
+                    BackgroundColor="{AppThemeBinding Light=#E7E7E7, Dark=#444}"
                     x:Name="QuestionStepper"
                     Minimum="1"
                     Maximum="50"
@@ -38,13 +72,23 @@
                     Value="10"
                     ValueChanged="OnQuestionsStepperValueChanged" />
             </HorizontalStackLayout>
-            
+
+            <!-- Theme Option -->
+            <Label Text="Theme" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
+            <Picker 
+                x:Name="ThemePicker"
+                Style="{StaticResource MinimalPickerStyle}"
+                Title="Select Theme" />
+
+            <!-- Save Button -->
             <Button 
                 Text="Save Settings"
+                FontFamily="Yu Mincho, 'MS Mincho', serif"
+                BackgroundColor="{AppThemeBinding Light=#E7E7E7, Dark=#444}"
+                TextColor="{AppThemeBinding Light=Black, Dark=White}"
                 Clicked="OnSaveSettingsClicked" 
                 HorizontalOptions="Center" />
 
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
-
