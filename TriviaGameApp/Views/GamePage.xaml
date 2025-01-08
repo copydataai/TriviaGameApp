@@ -5,26 +5,50 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Trivia Game - Round">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Japanese-inspired styles for GamePage -->
+            <Style x:Key="JapaneseLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="Margin" Value="0,10,0,10" />
+            </Style>
+
+            <Style x:Key="JapaneseButtonStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="Padding" Value="20,10" />
+                <Setter Property="Margin" Value="0,5" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="VerticalOptions" Value="Start" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <Grid RowDefinitions="Auto,Auto,*,Auto" Padding="20">
         
-        <!-- Current Player -->
+        <!-- Current Player with Japanese style -->
         <Label 
             x:Name="PlayerLabel"
             Grid.Row="0"
-            FontSize="20"
-            HorizontalOptions="Center" 
+            Style="{StaticResource JapaneseLabelStyle}"
             Text="Player 1" />
         
-        <!-- Question Display -->
+        <!-- Question Display with Japanese style -->
         <Label 
             x:Name="QuestionLabel"
             Grid.Row="1"
-            FontSize="18"
-            HorizontalOptions="CenterAndExpand"
-            Text="Question goes here"
-            Margin="0,10,0,20"/>
+            Style="{StaticResource JapaneseLabelStyle}"
+            Text="Question goes here" />
         
-        <!-- Answers Container (Buttons) -->
+        <!-- Answers Container (Buttons) with Japanese style -->
         <VerticalStackLayout 
             x:Name="AnswersContainer"
             Grid.Row="2"
@@ -34,23 +58,23 @@
             <!-- Dynamically filled by code-behind -->
         </VerticalStackLayout>
         
-        <!-- Timer + Next Button  -->
+        <!-- Timer + Skip Button -->
         <HorizontalStackLayout 
             Grid.Row="3"
             Spacing="20"
             HorizontalOptions="CenterAndExpand">
             
-            <!-- Countdown label -->
+            <!-- Countdown label with Japanese style -->
             <Label 
                 x:Name="TimerLabel"
-                FontSize="18"
-                TextColor="Red"
-                HorizontalOptions="CenterAndExpand"
-                Text="Time Left: 10" />
+                Style="{StaticResource JapaneseLabelStyle}"
+                Text="Time Left: 10"
+                TextColor="Red" />
             
-            <!-- If you want a next or skip button (optional) -->
+            <!-- Skip button with Japanese style -->
             <Button 
-                Text="Skip"
+                Text="Skip (スキップ)"
+                Style="{StaticResource JapaneseButtonStyle}"
                 Clicked="OnSkipClicked"/>
         </HorizontalStackLayout>
     </Grid>
