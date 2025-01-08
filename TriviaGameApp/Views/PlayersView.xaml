@@ -5,20 +5,78 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Player Setup">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="JapaneseTitleStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="28" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="Margin" Value="0,20,0,10" />
+            </Style>
+
+            <Style x:Key="JapaneseSubtitleStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource PrimaryDark_Dark}}" />
+                <Setter Property="Margin" Value="0,-5,0,20" />
+            </Style>
+
+            <Style x:Key="MinimalPickerStyle" TargetType="Picker">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="MinimumWidthRequest" Value="200" />
+            </Style>
+
+            <Style x:Key="MinimalButtonStyle" TargetType="Button">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="BorderWidth" Value="1" />
+                <Setter Property="CornerRadius" Value="0" />
+                <Setter Property="Padding" Value="20,10" />
+                <Setter Property="Margin" Value="0,20" />
+                <Setter Property="MinimumWidthRequest" Value="200" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ScrollView>
         <VerticalStackLayout 
             Padding="20" 
             Spacing="15">
+
+            <Line
+                X1="0" Y1="0" X2="200" Y2="0"
+                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                Margin="0,20,0,0"/>
             
             <Label 
-                Text="How many players?"
-                FontSize="18" 
-                HorizontalOptions="Center" />
+                Text="Player Setup"
+                Style="{StaticResource JapaneseTitleStyle}"/>
             
-            <!-- Number of Players Picker -->
+            <Label 
+                Text="(プレイヤー設定)"
+                Style="{StaticResource JapaneseSubtitleStyle}"/>
+
+            <Label 
+                Text="How many players? (プレイヤー数)"
+                Style="{StaticResource JapaneseSubtitleStyle}"
+                Margin="0,20,0,5"/>
+            
             <Picker 
                 x:Name="PlayerCountPicker"
-                Title="Choose 1-4"
+                Title="Choose 1-4 (1-4を選択)"
+                Style="{StaticResource MinimalPickerStyle}"
                 SelectedIndexChanged="OnPlayerCountChanged">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:Int32}">
@@ -30,13 +88,21 @@
                 </Picker.ItemsSource>
             </Picker>
 
-            <!-- This layout will hold the player name entries dynamically -->
-            <VerticalStackLayout x:Name="PlayerNamesContainer" 
-                                 Spacing="10" />
+            <VerticalStackLayout 
+                x:Name="PlayerNamesContainer" 
+                Spacing="15"
+                Margin="0,20"/>
 
-            <!-- Start Game Button -->
+            <Line
+                X1="0" Y1="0" X2="200" Y2="0"
+                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                StrokeThickness="1"
+                HorizontalOptions="Center"
+                Margin="0,20,0,20"/>
+
             <Button 
-                Text="Start Game"
+                Text="Start Game (ゲームを始める)"
+                Style="{StaticResource MinimalButtonStyle}"
                 Clicked="OnStartGameClicked" />
         </VerticalStackLayout>
     </ScrollView>
