@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web; // For HTML decoding
 using TriviaGameApp.Models;
+using TriviaGameApp.Views;
 
 namespace TriviaGameApp.Services
 {
@@ -21,17 +22,11 @@ namespace TriviaGameApp.Services
             _httpClient = new HttpClient();
         }
 
-        /// <summary>
-        /// Fetches 10 (or specified amount of) trivia questions from the Open Trivia DB.
-        /// By default, it uses the endpoint: https://opentdb.com/api.php?amount=10
-        /// </summary>
-        /// <param name="amount">Number of questions to retrieve</param>
-        /// <returns>A list of <see cref="TriviaQuestion"/> objects with cleaned question data.</returns>
-        public async Task<List<TriviaQuestion>> FetchTriviaAsync()
+        public async Task<List<TriviaQuestion>> FetchTriviaAsync(int players)
         {
             try
             {
-                int amount = TriviaSettings.NumberOfQuestions;
+                int amount = TriviaSettings.NumberOfQuestions * players;
                 string category = TriviaSettings.Category;
                 string difficulty = TriviaSettings.Difficulty;
                 string type = TriviaSettings.TriviaType;
