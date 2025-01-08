@@ -2,8 +2,7 @@
 <ContentPage 
     x:Class="TriviaGameApp.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Settings">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <!-- Minimalistic Japanese style: subtle accent color, spacing, etc. -->
     <ContentPage.Resources>
@@ -12,83 +11,136 @@
             <Style x:Key="JapaneseLabelStyle" TargetType="Label">
                 <!-- For demonstration, let's use a generic font: "Yu Mincho" or a fallback. -->
                 <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light=#111, Dark=#eee}" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
 
-            <!-- Style for pickers in minimalistic design. -->
-            <Style x:Key="MinimalPickerStyle" TargetType="Picker">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F0F0F0, Dark=#333}" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
-            </Style>
-
-            <!-- Style for the entire page (optional). -->
-            <Style TargetType="ContentPage">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F9F9F9, Dark=#1A1A1A}" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <Grid 
+            Padding="20"
+            RowSpacing="20" 
+            ColumnSpacing="15" 
+            RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+            ColumnDefinitions="Auto,*,Auto,*"
+            HorizontalOptions="CenterAndExpand"
+            MaximumWidthRequest="600">
 
-            <!-- Category -->
-            <Label Text="Category" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
-            <Picker 
-                x:Name="CategoryPicker"
-                Style="{StaticResource MinimalPickerStyle}"
-                Title="Select Category" />
+            <!-- Borders for first row -->
+            <Border 
+                Grid.Row="0" 
+                Grid.ColumnSpan="4"
+                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                StrokeThickness="1"
+                Margin="0,0,0,20">
+                <Grid ColumnDefinitions="Auto,*,Auto,*" ColumnSpacing="15" Padding="10">
+                    <Label 
+                        Grid.Column="0" 
+                        Text="Category" 
+                        FontAttributes="Bold" 
+                        Style="{StaticResource JapaneseLabelStyle}" 
+                        VerticalOptions="Center"/>
+                    <Picker 
+                        Grid.Column="1"
+                        x:Name="CategoryPicker"
+                        Title="Select Category" 
+                        Margin="0,0,15,0"/>
+                    
+                    <Label 
+                        Grid.Column="2" 
+                        Text="Difficulty" 
+                        FontAttributes="Bold" 
+                        Style="{StaticResource JapaneseLabelStyle}" 
+                        VerticalOptions="Center"/>
+                    <Picker 
+                        Grid.Column="3"
+                        x:Name="DifficultyPicker"
+                        Title="Select Difficulty"/>
+                </Grid>
+            </Border>
 
-            <!-- Difficulty -->
-            <Label Text="Difficulty" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
-            <Picker 
-                x:Name="DifficultyPicker"
-                Style="{StaticResource MinimalPickerStyle}"
-                Title="Select Difficulty" />
+            <!-- Border for second row -->
+            <Border 
+                Grid.Row="1" 
+                Grid.ColumnSpan="4"
+                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                StrokeThickness="1"
+                Margin="0,0,0,20">
+                <Grid ColumnDefinitions="Auto,*,Auto,*" ColumnSpacing="15" Padding="10">
+                    <Label 
+                        Grid.Column="0" 
+                        Text="Type" 
+                        FontAttributes="Bold" 
+                        Style="{StaticResource JapaneseLabelStyle}" 
+                        VerticalOptions="Center"/>
+                    <Picker 
+                        Grid.Column="1"
+                        x:Name="TypePicker"
+                        Title="Select Type" 
+                        Margin="0,0,15,0"/>
+                    
+                    <Label 
+                        Grid.Column="2" 
+                        Text="Theme" 
+                        FontAttributes="Bold" 
+                        Style="{StaticResource JapaneseLabelStyle}" 
+                        VerticalOptions="Center"/>
+                    <Picker 
+                        Grid.Column="3"
+                        x:Name="ThemePicker"
+                        Title="Select Theme"/>
+                </Grid>
+            </Border>
 
-            <!-- Type -->
-            <Label Text="Type" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
-            <Picker 
-                x:Name="TypePicker"
-                Style="{StaticResource MinimalPickerStyle}"
-                Title="Select Type" />
+            <!-- Border for Questions section -->
+            <Border 
+                Grid.Row="2" 
+                Grid.RowSpan="2"
+                Grid.ColumnSpan="4"
+                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                StrokeThickness="1"
+                Margin="0,0,0,20">
+                <VerticalStackLayout Padding="10" Spacing="10">
+                    <Label 
+                        Text="Number of Questions" 
+                        FontAttributes="Bold" 
+                        Style="{StaticResource JapaneseLabelStyle}"
+                        HorizontalOptions="Center"/>
 
-            <!-- Number of Questions -->
-            <Label Text="Number of Questions" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
-            <HorizontalStackLayout Spacing="10">
-                <Label 
-                    Text="{Binding Source={x:Reference QuestionStepper}, Path=Value, StringFormat='{0:F0}'}" 
-                    HorizontalOptions="Center" 
-                    WidthRequest="30"
-                    Style="{StaticResource JapaneseLabelStyle}"
-                />
-                <Stepper 
-                    BackgroundColor="{AppThemeBinding Light=#E7E7E7, Dark=#444}"
-                    x:Name="QuestionStepper"
-                    Minimum="1"
-                    Maximum="50"
-                    Increment="1"
-                    Value="10"
-                    ValueChanged="OnQuestionsStepperValueChanged" />
-            </HorizontalStackLayout>
-
-            <!-- Theme Option -->
-            <Label Text="Theme" FontAttributes="Bold" Style="{StaticResource JapaneseLabelStyle}" />
-            <Picker 
-                x:Name="ThemePicker"
-                Style="{StaticResource MinimalPickerStyle}"
-                Title="Select Theme" />
+                    <HorizontalStackLayout 
+                        HorizontalOptions="Center" 
+                        Spacing="10">
+                        <Label 
+                            Text="{Binding Source={x:Reference QuestionStepper}, Path=Value, StringFormat='{0:F0}'}" 
+                            VerticalOptions="Center"
+                            WidthRequest="30"
+                            Style="{StaticResource JapaneseLabelStyle}"/>
+                        <Stepper 
+                            x:Name="QuestionStepper"
+                            BackgroundColor="{AppThemeBinding Light=#E7E7E7, Dark=#444}"
+                            Minimum="1"
+                            Maximum="50"
+                            Increment="1"
+                            Value="10"
+                            ValueChanged="OnQuestionsStepperValueChanged"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
 
             <!-- Save Button -->
             <Button 
+                Grid.Row="4" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="4"
                 Text="Save Settings"
                 FontFamily="Yu Mincho, 'MS Mincho', serif"
                 BackgroundColor="{AppThemeBinding Light=#E7E7E7, Dark=#444}"
                 TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                Clicked="OnSaveSettingsClicked" 
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
+                Clicked="OnSaveSettingsClicked"
+                HorizontalOptions="Center"
+                Margin="0,10,0,0"
+                WidthRequest="200"/>
+        </Grid>
     </ScrollView>
 </ContentPage>

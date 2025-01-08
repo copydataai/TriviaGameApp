@@ -10,7 +10,7 @@ public static class TriviaSettings
     public static string TriviaType { get; set; } = "any"; // "multiple", "boolean", "any"
     public static int NumberOfQuestions { get; set; } = 10;
 
-    public static string AppThemeChoice { get; set; } = "Dark";
+    public static string AppThemeChoice { get; set; } = "System";
 
     // Keys used in Preferences
     private const string CategoryKey = "Category";
@@ -46,7 +46,7 @@ public static class TriviaSettings
             Difficulty = Preferences.Get(DifficultyKey, "any");
             TriviaType = Preferences.Get(TriviaTypeKey, "any");
             NumberOfQuestions = Preferences.Get(NumQuestionsKey, 10);
-            AppThemeChoice = Preferences.Get(AppThemeChoiceKey, "Dark");
+            AppThemeChoice = Preferences.Get(AppThemeChoiceKey, "System");
         }
     }
 
@@ -95,5 +95,5 @@ public class TriviaSettingsData
     public int NumberOfQuestions { get; set; } = 10;
     
 
-    public string AppThemeChoice { get; set; } = "Dark";
+    public string AppThemeChoice { get; set; } = "System";
 }
