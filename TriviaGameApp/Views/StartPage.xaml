@@ -1,32 +1,102 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage 
-    x:Class="TriviaGameApp.Views.StartPage"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    Title="Trivia Game - Home">
+<ContentPage
+   x:Class="TriviaGameApp.Views.StartPage"
+   xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+   <ContentPage.Resources>
+       <ResourceDictionary>
+           <!-- Japanese-inspired styles -->
+           <Style x:Key="JapaneseTitleStyle" TargetType="Label">
+               <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+               <Setter Property="FontSize" Value="36" />
+               <Setter Property="HorizontalOptions" Value="Center" />
+               <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+               <Setter Property="Margin" Value="0,40,0,60" />
+           </Style>
 
-    <VerticalStackLayout Padding="20" Spacing="15">
-        
-        <Label 
-            Text="Trivia Game"
-            FontSize="32"
-            HorizontalOptions="Center" 
-            VerticalOptions="CenterAndExpand" />
-        
-        <!-- New Game Button -->
-        <Button 
-            Text="New Game"
-            Clicked="OnNewGameClicked" />
-        
-        <!-- Leaderboard -->
-        <Button 
-            Text="Leaderboard"
-            Clicked="OnLeaderboardClicked" />
-        
-        <!-- Settings -->
-        <Button 
-            Text="Settings"
-            Clicked="OnSettingsClicked" />
+           <Style x:Key="JapaneseSubtitleStyle" TargetType="Label">
+               <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+               <Setter Property="FontSize" Value="16" />
+               <Setter Property="HorizontalOptions" Value="Center" />
+               <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource PrimaryDark_Dark}}" />
+               <Setter Property="Margin" Value="0,-50,0,40" />
+           </Style>
 
-    </VerticalStackLayout>
+           <Style x:Key="MinimalButtonStyle" TargetType="Button">
+               <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+               <Setter Property="BackgroundColor" Value="Transparent" />
+               <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+               <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+               <Setter Property="BorderWidth" Value="1" />
+               <Setter Property="CornerRadius" Value="0" />
+               <Setter Property="Padding" Value="20,10" />
+               <Setter Property="Margin" Value="0,10" />
+               <Setter Property="MinimumWidthRequest" Value="200" />
+               <Setter Property="FontSize" Value="18" />
+           </Style>
+       </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <!-- Main Layout -->
+   <Grid 
+       RowDefinitions="Auto,*"
+       Padding="20">
+       
+       <!-- Decorative Line -->
+       <Line
+           Grid.Row="0"
+           X1="0" Y1="0" X2="200" Y2="0"
+           Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+           StrokeThickness="1"
+           HorizontalOptions="Center"
+           Margin="0,20,0,0"/>
+
+       <!-- Content -->
+       <VerticalStackLayout
+           Grid.Row="1"
+           Spacing="30"
+           VerticalOptions="Center">
+
+           <!-- Title -->
+           <Label 
+               Text="Trivia Game"
+               Style="{StaticResource JapaneseTitleStyle}"/>
+           
+           <Label 
+               Text="(トリビアゲーム)"
+               Style="{StaticResource JapaneseSubtitleStyle}"/>
+           
+           <!-- Buttons Container -->
+           <VerticalStackLayout
+               Spacing="20"
+               HorizontalOptions="Center">
+               
+               <!-- New Game Button -->
+               <Button
+                   Text="New Game (新しいゲーム)"
+                   Style="{StaticResource MinimalButtonStyle}"
+                   Clicked="OnNewGameClicked" />
+               
+               <!-- Leaderboard -->
+               <Button
+                   Text="Leaderboard (リーダーボード)"
+                   Style="{StaticResource MinimalButtonStyle}"
+                   Clicked="OnLeaderboardClicked" />
+               
+               <!-- Settings -->
+               <Button
+                   Text="Settings (設定)"
+                   Style="{StaticResource MinimalButtonStyle}"
+                   Clicked="OnSettingsClicked" />
+           </VerticalStackLayout>
+
+           <!-- Bottom Decorative Line -->
+           <Line
+               X1="0" Y1="0" X2="200" Y2="0"
+               Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+               StrokeThickness="1"
+               HorizontalOptions="Center"
+               Margin="0,40,0,0"/>
+       </VerticalStackLayout>
+   </Grid>
 </ContentPage>

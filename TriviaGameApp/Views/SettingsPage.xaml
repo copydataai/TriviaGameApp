@@ -4,12 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
-    <!-- Minimalistic Japanese style: subtle accent color, spacing, etc. -->
     <ContentPage.Resources>
         <ResourceDictionary>
-            <!-- Example style for labels, with a Japanese-inspired font or accent color. -->
             <Style x:Key="JapaneseLabelStyle" TargetType="Label">
-                <!-- For demonstration, let's use a generic font: "Yu Mincho" or a fallback. -->
                 <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
                 <Setter Property="FontSize" Value="16" />
             </Style>
@@ -27,7 +24,6 @@
             HorizontalOptions="CenterAndExpand"
             MaximumWidthRequest="600">
 
-            <!-- Borders for first row -->
             <Border 
                 Grid.Row="0" 
                 Grid.ColumnSpan="4"
@@ -60,7 +56,6 @@
                 </Grid>
             </Border>
 
-            <!-- Border for second row -->
             <Border 
                 Grid.Row="1" 
                 Grid.ColumnSpan="4"
@@ -93,7 +88,6 @@
                 </Grid>
             </Border>
 
-            <!-- Border for Questions section -->
             <Border 
                 Grid.Row="2" 
                 Grid.RowSpan="2"
@@ -128,7 +122,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Save Button -->
             <Button 
                 Grid.Row="4" 
                 Grid.Column="0" 

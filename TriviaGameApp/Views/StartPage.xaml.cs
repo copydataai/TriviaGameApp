@@ -1,7 +1,6 @@
 using Microsoft.Maui.Controls;
 
 namespace TriviaGameApp.Views;
-
 public partial class StartPage : ContentPage
 {
     public StartPage()
