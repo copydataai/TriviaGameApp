@@ -5,81 +5,141 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:TriviaGameApp.Models">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="JapaneseTitleStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="28" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="Margin" Value="0,20,0,10" />
+            </Style>
 
-    <!-- We wrap the whole page in an absolute layout so we can center the spinner easily -->
+            <Style x:Key="FilterLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource PrimaryDark}, Dark={StaticResource PrimaryDark_Dark}}" />
+            </Style>
+
+            <Style x:Key="MinimalPickerStyle" TargetType="Picker">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style x:Key="MinimalEntryStyle" TargetType="Entry">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="FontFamily" Value="Yu Mincho, 'MS Mincho', serif" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <AbsoluteLayout>
-
-        <!-- The main content of the page (filters + table) -->
         <ScrollView 
             x:Name="LeaderboardContainer"
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0,0,1,1"
-            IsVisible="False"> <!-- hidden until user changes a filter -->
+            IsVisible="False">
 
-            <VerticalStackLayout Padding="20" Spacing="10">
-                
-                <!-- FILTER CONTROLS -->
-                <HorizontalStackLayout Spacing="5" Margin="0,10,0,10">
-                    <!-- Category picker -->
-                    <Picker 
-                        x:Name="CategoryFilterPicker"
-                        Title="Filter by Category"
-                        WidthRequest="180"/>
-            
-                    <!-- Difficulty picker -->
-                    <Picker 
-                        x:Name="DifficultyFilterPicker"
-                        Title="Filter by Difficulty"
-                        WidthRequest="150"/>
+            <VerticalStackLayout Padding="20" Spacing="15">
+                <!-- Title with decorative lines -->
+                <VerticalStackLayout Spacing="10">
+                    <Line
+                        X1="0" Y1="0" X2="200" Y2="0"
+                        Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                        StrokeThickness="1"
+                        HorizontalOptions="Center"/>
+                    
+                    <Label 
+                        Text="Leaderboard"
+                        Style="{StaticResource JapaneseTitleStyle}"/>
+                    
+                    <Label 
+                        Text="(リーダーボード)"
+                        Style="{StaticResource FilterLabelStyle}"
+                        HorizontalOptions="Center"
+                        Margin="0,-5,0,10"/>
 
-                    <!-- Name search -->
-                    <VerticalStackLayout Spacing="0" VerticalOptions="Center">
-                        <Label Text="Name" FontAttributes="Bold" VerticalOptions="Center"/>
+                    <Line
+                        X1="0" Y1="0" X2="200" Y2="0"
+                        Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                        StrokeThickness="1"
+                        HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="15" Margin="0,10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <Label Text="Category (カテゴリー)" Style="{StaticResource FilterLabelStyle}"/>
+                        <Picker 
+                            x:Name="CategoryFilterPicker"
+                            Style="{StaticResource MinimalPickerStyle}"
+                            Title="Select Category"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <Label Text="Difficulty (難易度)" Style="{StaticResource FilterLabelStyle}"/>
+                        <Picker 
+                            x:Name="DifficultyFilterPicker"
+                            Style="{StaticResource MinimalPickerStyle}"
+                            Title="Select Difficulty"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="5">
+                        <Label Text="Name (名前)" Style="{StaticResource FilterLabelStyle}"/>
                         <Entry 
                             x:Name="NameSearchEntry"
-                            Placeholder="Filter by Name"
-                            HeightRequest="40"
-                            WidthRequest="120" />
+                            Style="{StaticResource MinimalEntryStyle}"
+                            Placeholder="Search by name"/>
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
-
-                <!-- Table Header -->
-                <Grid 
-                    ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*"
-                    Padding="5,0" 
-                    BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#222222}">
-                    <Label Grid.Column="0" Text="Rank" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="2" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="3" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="4" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="5" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="6" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"/>
-                    <Label Grid.Column="7" Text="Date" FontAttributes="Bold" HorizontalOptions="Center"/>
                 </Grid>
 
-                <!-- CollectionView for the leaderboard -->
+                <Grid 
+                    ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*"
+                    Padding="10,15" 
+                    BackgroundColor="Transparent"
+                    Margin="0,10">
+                    <Label Grid.Column="0" Text="Rank" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="1" Text="Name" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="2" Text="Category" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="3" Text="Difficulty" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="4" Text="Questions" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="5" Text="Time(s)" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="6" Text="Points" Style="{StaticResource HeaderLabelStyle}"/>
+                    <Label Grid.Column="7" Text="Date" Style="{StaticResource HeaderLabelStyle}"/>
+                </Grid>
+
                 <CollectionView 
                     x:Name="LeaderboardCollectionView"
                     ItemsLayout="VerticalList">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:LeaderboardEntry">
-                            <!-- A Border around each row for separation -->
                             <Border 
                                 StrokeThickness="1"
-                                Stroke="{AppThemeBinding Light=LightGray, Dark=Gray}"
+                                Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
+                                StrokeShape="Rectangle"
                                 Padding="10"
-                                Margin="0,2">
+                                Margin="0,5">
                                 <Grid ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*" Padding="5,0">
                                     <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center">
                                         <Label Text="{Binding Rank}" Margin="0,0,5,0"/>
                                         <Label Text="{Binding MedalEmoji}" />
                                     </HorizontalStackLayout>
                                     <Label Grid.Column="1" Text="{Binding Name}" HorizontalOptions="Center"/>
-                                    <Label Grid.Column="2" Text="{Binding Category}" HorizontalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Category}" HorizontalOptions="Center"/>
                                     <Label Grid.Column="3" Text="{Binding Difficulty}" HorizontalOptions="Center"/>
                                     <Label Grid.Column="4" Text="{Binding Questions}" HorizontalOptions="Center"/>
-                                    <Label Grid.Column="5" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"/> 
+                                    <Label Grid.Column="5" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"/>
                                     <Label Grid.Column="6" Text="{Binding TotalPoints}" HorizontalOptions="Center"/>
                                     <Label Grid.Column="7" Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}" HorizontalOptions="Center"/>
                                 </Grid>
@@ -90,7 +150,6 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <!-- Loading indicator + random text in the center -->
         <VerticalStackLayout
             x:Name="LoadingLayout"
             AbsoluteLayout.LayoutFlags="All"
@@ -100,8 +159,8 @@
 
             <Label 
                 x:Name="RandomLoadingLabel" 
-                Text="Loading..."
-                FontAttributes="Bold"
+                Text="Loading... (読み込み中...)"
+                Style="{StaticResource FilterLabelStyle}"
                 HorizontalOptions="Center"
                 IsVisible="False" />
 
@@ -109,12 +168,10 @@
                 x:Name="LoadingIndicator"
                 IsRunning="False"
                 IsVisible="False"
-                Color="{AppThemeBinding Light=Blue, Dark=Cyan}"
+                Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Primary_Dark}}"
                 HeightRequest="50" 
                 HorizontalOptions="Center" 
                 VerticalOptions="Center" />
-
         </VerticalStackLayout>
-
     </AbsoluteLayout>
 </ContentPage>
