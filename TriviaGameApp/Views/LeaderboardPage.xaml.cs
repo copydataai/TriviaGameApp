@@ -29,23 +29,11 @@ namespace TriviaGameApp.Views
             InitializeComponent();
 
             // Setup filter pickers
-            CategoryFilterPicker.ItemsSource = new List<string>
-            {
-                "All Categories",
-                "General Knowledge",
-                "Entertainment: Books",
-                "Entertainment: Film",
-                "Entertainment: Television",
-                "Entertainment: Music",
-                // ... add more or load dynamically
-            };
+            CategoryFilterPicker.ItemsSource = CategoryHelper.AllCategories.Select(c => c.Text).ToList();
             CategoryFilterPicker.SelectedIndex = 0;
             CategoryFilterPicker.SelectedIndexChanged += OnFilterChanged;
 
-            DifficultyFilterPicker.ItemsSource = new List<string>
-            {
-                "All Difficulties", "Easy", "Medium", "Hard"
-            };
+            DifficultyFilterPicker.ItemsSource = DifficultyHelper.AllDifficulties;
             DifficultyFilterPicker.SelectedIndex = 0;
             DifficultyFilterPicker.SelectedIndexChanged += OnFilterChanged;
 

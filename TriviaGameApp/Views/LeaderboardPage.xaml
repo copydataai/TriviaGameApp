@@ -3,18 +3,8 @@
     x:Class="TriviaGameApp.Views.LeaderboardPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:TriviaGameApp.Models"
-    Title="Leaderboard"
-    BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#101010}">
+    xmlns:models="clr-namespace:TriviaGameApp.Models">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <!-- Adaptive label style for text color -->
-            <Style x:Key="AdaptiveLabelStyle" TargetType="Label">
-                <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
-            </Style>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <!-- We wrap the whole page in an absolute layout so we can center the spinner easily -->
     <AbsoluteLayout>
@@ -33,23 +23,24 @@
                     <!-- Category picker -->
                     <Picker 
                         x:Name="CategoryFilterPicker"
-                        Style="{StaticResource AdaptiveLabelStyle}"
                         Title="Filter by Category"
                         WidthRequest="180"/>
             
                     <!-- Difficulty picker -->
                     <Picker 
                         x:Name="DifficultyFilterPicker"
-                        Style="{StaticResource AdaptiveLabelStyle}"
                         Title="Filter by Difficulty"
                         WidthRequest="150"/>
 
                     <!-- Name search -->
-                    <Entry 
-                        x:Name="NameSearchEntry"
-                        Style="{StaticResource AdaptiveLabelStyle}"
-                        Placeholder="Filter by Name"
-                        WidthRequest="120" />
+                    <VerticalStackLayout Spacing="0" VerticalOptions="Center">
+                        <Label Text="Name" FontAttributes="Bold" VerticalOptions="Center"/>
+                        <Entry 
+                            x:Name="NameSearchEntry"
+                            Placeholder="Filter by Name"
+                            HeightRequest="40"
+                            WidthRequest="120" />
+                    </VerticalStackLayout>
                 </HorizontalStackLayout>
 
                 <!-- Table Header -->
@@ -57,22 +48,14 @@
                     ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*"
                     Padding="5,0" 
                     BackgroundColor="{AppThemeBinding Light=#EEEEEE, Dark=#222222}">
-                    <Label Grid.Column="0" Text="Rank" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="2" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="3" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="4" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="5" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="6" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
-                    <Label Grid.Column="7" Text="Date" FontAttributes="Bold" HorizontalOptions="Center"
-                           Style="{StaticResource AdaptiveLabelStyle}" />
+                    <Label Grid.Column="0" Text="Rank" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="2" Text="Category" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="3" Text="Difficulty" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="4" Text="Questions" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="5" Text="Time(s)" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="6" Text="Points" FontAttributes="Bold" HorizontalOptions="Center"/>
+                    <Label Grid.Column="7" Text="Date" FontAttributes="Bold" HorizontalOptions="Center"/>
                 </Grid>
 
                 <!-- CollectionView for the leaderboard -->
@@ -89,25 +72,16 @@
                                 Margin="0,2">
                                 <Grid ColumnDefinitions="Auto,2*,1*,1*,1*,1*,1*,1*" Padding="5,0">
                                     <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Center">
-                                        <Label Text="{Binding Rank}" Margin="0,0,5,0"
-                                               Style="{StaticResource AdaptiveLabelStyle}" />
-                                        <Label Text="{Binding MedalEmoji}"
-                                            Style="{StaticResource AdaptiveLabelStyle}" />
+                                        <Label Text="{Binding Rank}" Margin="0,0,5,0"/>
+                                        <Label Text="{Binding MedalEmoji}" />
                                     </HorizontalStackLayout>
-                                    <Label Grid.Column="1" Text="{Binding Name}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="2" Text="{Binding Category}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="3" Text="{Binding Difficulty}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="4" Text="{Binding Questions}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="5" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="6" Text="{Binding TotalPoints}" HorizontalOptions="Center"
-                                           Style="{StaticResource AdaptiveLabelStyle}" />
-                                    <Label Grid.Column="7" Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}" HorizontalOptions="Center"
-                                             Style="{StaticResource AdaptiveLabelStyle}" />
+                                    <Label Grid.Column="1" Text="{Binding Name}" HorizontalOptions="Center"/>
+                                    <Label Grid.Column="2" Text="{Binding Category}" HorizontalOptions="Center" />
+                                    <Label Grid.Column="3" Text="{Binding Difficulty}" HorizontalOptions="Center"/>
+                                    <Label Grid.Column="4" Text="{Binding Questions}" HorizontalOptions="Center"/>
+                                    <Label Grid.Column="5" Text="{Binding TimeInSeconds}" HorizontalOptions="Center"/> 
+                                    <Label Grid.Column="6" Text="{Binding TotalPoints}" HorizontalOptions="Center"/>
+                                    <Label Grid.Column="7" Text="{Binding DateOfGame, StringFormat='{0:MM/dd/yyyy}'}" HorizontalOptions="Center"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -126,7 +100,6 @@
 
             <Label 
                 x:Name="RandomLoadingLabel" 
-                Style="{StaticResource AdaptiveLabelStyle}"
                 Text="Loading..."
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
