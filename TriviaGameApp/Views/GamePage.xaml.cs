@@ -18,7 +18,7 @@ namespace TriviaGameApp.Views
         private int _timeLeft;
         private bool _timerRunning = false;
 
-        private bool _gameEnded = false;  // guard for EndGame()
+        private bool _gameEnded = false;  
 
         public GamePage()
         {
@@ -29,6 +29,8 @@ namespace TriviaGameApp.Views
         {
             base.OnAppearing();
             _gameStartTime = DateTime.Now;
+
+            GameState.TimeLimitInSeconds = 30;
 
             if (GameState.Players == null || GameState.Players.Count == 0)
             {
@@ -53,21 +55,17 @@ namespace TriviaGameApp.Views
                 );
             }
 
-            // Reset indexes
             _currentPlayerIndex = 0;
             _currentQuestionIndex = 0;
             _gameEnded = false;
 
-            // Load first question
             LoadQuestion();
         }
 
         private void LoadQuestion()
         {
-            // If we've already ended, do nothing
             if (_gameEnded) return;
 
-            // 1) Are we out of players?
             if (_currentPlayerIndex >= GameState.Players.Count)
             {
                 EndGame();
@@ -77,32 +75,26 @@ namespace TriviaGameApp.Views
             var currentPlayer = GameState.Players[_currentPlayerIndex];
             var questions = _playerQuestions[_currentPlayerIndex];
 
-            // 2) Are we out of questions for this player?
             if (_currentQuestionIndex >= questions.Count)
             {
-                // Move on to next player
                 _currentPlayerIndex++;
                 _currentQuestionIndex = 0;
 
-                // If that puts us out of players, end game
                 if (_currentPlayerIndex >= GameState.Players.Count)
                 {
                     EndGame();
                     return;
                 }
 
-                // Otherwise load the next player’s first question
                 LoadQuestion();
                 return;
             }
 
-            // 3) We have a valid question
             PlayerLabel.Text = $"{currentPlayer.Name}'s Turn (Score: {currentPlayer.Score})";
             
             var question = questions[_currentQuestionIndex];
             QuestionLabel.Text = question.Question;
 
-            // 4) Create answer buttons
             AnswersContainer.Children.Clear();
             foreach (var answer in question.AllAnswers)
             {
@@ -115,23 +107,19 @@ namespace TriviaGameApp.Views
                 AnswersContainer.Children.Add(answerButton);
             }
 
-            // 5) Start Timer
             StartTimer();
         }
 
         private void OnAnswerSelected(string chosenAnswer, TriviaQuestion question)
         {
-            // Stop timer
             _timerRunning = false;
 
-            // Disable answer buttons
             foreach (var view in AnswersContainer.Children)
             {
                 if (view is Button btn)
                     btn.IsEnabled = false;
             }
 
-            // Evaluate answer
             bool isCorrect = chosenAnswer == question.CorrectAnswer;
             if (isCorrect)
             {
@@ -144,7 +132,6 @@ namespace TriviaGameApp.Views
                 DisplayAlert("Incorrect!", "Better luck next time.", "OK");
             }
 
-            // Move to next question
             _currentQuestionIndex++;
             LoadQuestion();
         }
@@ -162,7 +149,7 @@ namespace TriviaGameApp.Views
 
         private void StartTimer()
         {
-            _timeLeft = GameState.TimeLimitInSeconds;
+            _timeLeft = GameState.TimeLimitInSeconds; 
             _timerRunning = true;
             UpdateTimerLabel();
 
@@ -173,32 +160,21 @@ namespace TriviaGameApp.Views
                 _timeLeft--;
                 UpdateTimerLabel();
 
-                // Animate a little “shake”
-                TimerLabel.RotateTo(10, 200, Easing.Linear)
-                          .ContinueWith((t) => TimerLabel.RotateTo(-10, 200, Easing.Linear))
-                          .ContinueWith((t) => TimerLabel.RotateTo(0, 200, Easing.Linear));
 
                 if (_timeLeft <= 0)
                 {
                     _timerRunning = false;
                     DisplayAlert("Time's Up!", "You ran out of time.", "OK");
 
-                    // Disable buttons
-                    foreach (var view in AnswersContainer.Children)
-                    {
-                        if (view is Button btn)
-                            btn.IsEnabled = false;
-                    }
-
-                    // Move on
                     _currentQuestionIndex++;
                     LoadQuestion();
-                    return false; // stop timer
+                    return false; 
                 }
 
-                return true; // keep ticking
+                return true; 
             });
         }
+
 
         private void UpdateTimerLabel()
         {
@@ -207,17 +183,14 @@ namespace TriviaGameApp.Views
 
         private async void OnSkipClicked(object sender, EventArgs e)
         {
-            // Stop timer
             _timerRunning = false;
 
-            // Disable buttons
             foreach (var view in AnswersContainer.Children)
             {
                 if (view is Button btn)
                     btn.IsEnabled = false;
             }
 
-            // Move on
             _currentQuestionIndex++;
             LoadQuestion();
         }
@@ -227,23 +200,19 @@ namespace TriviaGameApp.Views
             if (_gameEnded) return;
             _gameEnded = true;
 
-            // Stop the clock
             var totalTime = DateTime.Now - _gameStartTime;
             int totalSeconds = (int)totalTime.TotalSeconds;
 
-            // Load existing leaderboard
             var leaderboard = LeaderboardFileService.LoadLeaderboard();
             string categoryText = CategoryHelper.GetCategoryText(TriviaSettings.Category);
             string difficultyText = TriviaSettings.Difficulty;
 
-            // Example: if you expect 10 Q's per player
             int questionsPerPlayer = _playerQuestions.Count > 0 
                 ? _playerQuestions[0].Count
                 : 10;
 
             string dateOfGame = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
 
-            // Add each player's score exactly once
             foreach (var player in GameState.Players)
             {
                 var entry = new LeaderboardEntry
@@ -261,7 +230,6 @@ namespace TriviaGameApp.Views
 
             LeaderboardFileService.SaveLeaderboard(leaderboard);
 
-            // Show final scores
             string resultMessage = "Final Scores:\n\n";
             foreach (var p in GameState.Players)
             {
@@ -269,7 +237,6 @@ namespace TriviaGameApp.Views
             }
             await DisplayAlert("Game Over!", resultMessage, "OK");
 
-            // Navigate to Leaderboard
             await Shell.Current.GoToAsync("LeaderboardPage");
         }
     }

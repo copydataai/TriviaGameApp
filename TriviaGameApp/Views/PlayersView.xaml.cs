@@ -7,7 +7,7 @@ public static class GameState
 {
     public static List<Player>? Players { get; set; }
     public static int TotalQuestionsPerPlayer { get; set; } = 10;
-    public static int TimeLimitInSeconds { get; set; } = 10;
+    public static int TimeLimitInSeconds { get; set; } = 30;
 }
 
 public partial class PlayersView : ContentPage
